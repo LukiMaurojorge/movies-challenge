@@ -1,0 +1,49 @@
+#! /usr/bin/env php
+
+<?php
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use GuzzleHttp\Client;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+
+require 'vendor/autoload.php';
+
+$app = new Application();
+
+$app->register('show')
+    ->addArgument('name', InputArgument::REQUIRED)
+    ->addOption('fullPlot')
+    ->addOption('shortPlot')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        $client = new Client();
+
+        $title = $input->getArgument('name');
+
+        $plot = 'short';
+        if ($input->getOption('fullPlot')) {
+            $plot = 'full';
+        } elseif ($input->getOption('shortPlot')) {
+            $plot = 'short';
+        }
+
+        $baseUrl = 'http://www.omdbapi.com/';
+
+        $response = $client->request('GET', $baseUrl, [
+            'query' => [
+                'apikey' => '4816db59',
+                't' => $title,
+                'plot' => $plot
+            ]
+        ]);
+
+        $body = $response->getBody();
+
+        $data = json_decode($body, true);
+
+        $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
+    });
+
+$app->run();

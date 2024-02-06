@@ -1,0 +1,19 @@
+{
+  "name": "lucasmaurojorge/movies-challenge",
+  "autoload": {
+    "psr-4": {
+      "Lucasmaurojorge\\MoviesChallenge\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "LukiMaurojorge",
+      "email": "lucas.maurojorge@lightit.io"
+    }
+  ],
+  "require": {
+    "symfony/console": "~2.0",
+    "guzzle/guzzle": "~3.9",
+    "guzzlehttp/guzzle": "^7.8"
+  }
+}
